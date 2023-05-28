@@ -55,13 +55,6 @@ function HomeDrawer(props: any) {
                 navigateToSetting('backup');
             },
         },
-        {
-            icon: 'information-outline',
-            title: '关于',
-            onPress: () => {
-                navigateToSetting('about');
-            },
-        },
     ] as const;
 
     return (
