@@ -1,42 +1,43 @@
 import PluginManager from '@/core/pluginManager';
 import {useCallback, useEffect, useRef, useState} from 'react';
 
-export default function useAlbumDetail(
-    originalAlbumItem: IAlbum.IAlbumItem | null,
+export default function usePluginSheetMusicList(
+    originalSheetItem: IMusic.IMusicSheetItem | null,
 ) {
     const currentPageRef = useRef(1);
     const [loadMore, setLoadMore] = useState<'idle' | 'loading' | 'done'>(
         'idle',
     );
-    const [albumItem, setAlbumItem] = useState<IAlbum.IAlbumItemBase | null>(
-        originalAlbumItem,
+    const [sheetItem, setSheetItem] = useState<IMusic.IMusicSheetItem | null>(
+        originalSheetItem,
     );
     const [musicList, setMusicList] = useState<IMusic.IMusicItem[]>(
-        originalAlbumItem?.musicList ?? [],
+        originalSheetItem?.musicList ?? [],
     );
 
-    const getAlbumDetail = useCallback(
+    const getSheetDetail = useCallback(
         async function () {
-            if (originalAlbumItem === null || loadMore !== 'idle') {
+            if (originalSheetItem === null || loadMore !== 'idle') {
                 return;
             }
 
             try {
                 setLoadMore('loading');
                 const result = await PluginManager.getByMedia(
-                    originalAlbumItem,
-                )?.methods?.getAlbumInfo?.(
-                    originalAlbumItem,
+                    originalSheetItem,
+                )?.methods?.getMusicSheetInfo?.(
+                    originalSheetItem,
                     currentPageRef.current,
                 );
+                console.log(result, 'ddd');
                 if (result === null || result === undefined) {
                     throw new Error();
                 }
-                if (result?.albumItem) {
-                    setAlbumItem(prev => ({
+                if (result?.sheetItem) {
+                    setSheetItem(prev => ({
                         ...(prev ?? {}),
-                        ...(result.albumItem as IAlbum.IAlbumItemBase),
-                        platform: originalAlbumItem.platform,
+                        ...(result.sheetItem as IMusic.IMusicSheetItem),
+                        platform: originalSheetItem.platform,
                     }));
                 }
                 if (result?.musicList) {
@@ -58,8 +59,8 @@ export default function useAlbumDetail(
     );
 
     useEffect(() => {
-        getAlbumDetail();
+        getSheetDetail();
     }, []);
 
-    return [loadMore, albumItem, musicList, getAlbumDetail] as const;
+    return [loadMore, sheetItem, musicList, getSheetDetail] as const;
 }

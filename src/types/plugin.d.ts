@@ -39,6 +39,18 @@ declare namespace IPlugin {
         musicList?: IMusic.IMusicItem[];
     }
 
+    interface ISheetInfoResult {
+        isEnd?: boolean;
+        sheetItem?: IMusic.IMusicSheetItemBase;
+        musicList?: IMusic.IMusicItem[];
+    }
+
+    interface IGetRecommendSheetTagsResult {
+        // 固定的tag
+        pinned?: IMusic.IMusicSheetItemBase[];
+        data?: IMusic.IMusicSheetGroupItem[];
+    }
+
     interface IPluginDefine {
         /** 来源名 */
         platform: string;
@@ -78,6 +90,11 @@ declare namespace IPlugin {
             albumItem: IAlbum.IAlbumItemBase,
             page: number,
         ) => Promise<IAlbumInfoResult | null>;
+        /** 获取歌单信息，有分页 */
+        getMusicSheetInfo?: (
+            sheetItem: IMusic.IMusicSheetItem,
+            page: number,
+        ) => Promise<ISheetInfoResult | null>;
         /** 获取作品，有分页 */
         getArtistWorks?: IGetArtistWorksFunc;
         /** 导入歌单 */
@@ -90,12 +107,19 @@ declare namespace IPlugin {
             urlLike: string,
         ) => Promise<IMusic.IMusicItem | null>;
         /** 获取榜单 */
-        getTopLists?: () => Promise<IMusic.IMusicTopListGroupItem[]>;
+        getTopLists?: () => Promise<IMusic.IMusicSheetGroupItem[]>;
         // todo:分页
         /** 获取榜单详情 */
         getTopListDetail?: (
-            topListItem: IMusic.IMusicTopListItem,
-        ) => Promise<ICommon.WithMusicList<IMusic.IMusicTopListItem>>;
+            topListItem: IMusic.IMusicSheetItemBase,
+        ) => Promise<ICommon.WithMusicList<IMusic.IMusicSheetItemBase>>;
+        /** 获取热门歌单tag */
+        getRecommendSheetTags?: () => Promise<IGetRecommendSheetTagsResult>;
+        /** 歌单列表 */
+        getRecommendSheetsByTag?: (
+            tag: ICommon.IUnique,
+            page?: number,
+        ) => Promise<ICommon.PaginationResponse<IMusic.IMusicSheetItemBase>>;
     }
 
     export interface IPluginInstance extends IPluginDefine {
