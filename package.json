@@ -1,12 +1,8 @@
 {
   "name": "MusicFree",
-  "version": "0.1.0-alpha.8",
+  "version": "0.1.0-alpha.7",
   "license": "GPL",
   "private": true,
-  "author": {
-    "name": "猫头猫",
-    "email": "lhx_xjtu@163.com"
-  },
   "scripts": {
     "android": "react-native run-android",
     "ios": "react-native run-ios",
@@ -136,9 +132,5 @@
       "npm run lint",
       "git add ."
     ]
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/maotoumao/MusicFree.git"
   }
 }
